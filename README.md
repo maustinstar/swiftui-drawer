@@ -10,7 +10,7 @@ Add a dependency in your your `Package.swift`
 
 ## Example 1
 
-![A custom multi-height drawer](Previews/blue-drawer.mov)
+![A custom multi-height drawer](Previews/blue-drawer.mov | width=100)
 
 ```
 Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40]) {
@@ -33,7 +33,7 @@ Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40]) {
 
 ## Example 2
 
-![A two-height blue drawer](Previews/blue-drawer.mov)
+![A two-height blue drawer](Previews/blue-drawer.mov | width=100)
 
 ```
 Drawer(heights: [100, 340]) {
