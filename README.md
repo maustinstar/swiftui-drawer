@@ -13,7 +13,7 @@ Add a dependency in your your `Package.swift`
 ![A custom multi-height drawer](Previews/blue-drawer.mov)
 
 ```
-Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40]) {
+Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
     ZStack {
         
         RoundedRectangle(cornerRadius: 12)

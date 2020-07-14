@@ -1,31 +1,36 @@
 //
 //  Drawer.swift
-//
+//  Party Anchor
 //
 //  Created by Michael Verges on 7/14/20.
 //  Copyright © 2020 littlnotes. All rights reserved.
 //
-
-#if canImport(SwiftUI)
 
 import SwiftUI
 
 /// A bottom-up view that conforms to multiple heights
 public struct Drawer<Content>: View where Content: View {
     
-    private var content: Content
-    
     /// A bottom-up view that conforms to multiple heights
     /// - Parameters:
     ///   - heights: The possible resting heights of the drawer
     ///   - startingHeight: The starting height of the drawer. Defaults to the first height marker if not specified
     ///   - content: The view that defines the drawer
-    public init(heights: [CGFloat], startingHeight: CGFloat? = nil, @ViewBuilder _ content: () -> Content) {
+    public init(
+        heights: [CGFloat],
+        startingHeight: CGFloat? = nil,
+        impact: UIImpactFeedbackGenerator.FeedbackStyle? = nil,
+        @ViewBuilder _ content: () -> Content) {
         self.heights = heights
         self._height = .init(initialValue: startingHeight ?? heights.first!)
         self._restingHeight = .init(initialValue: startingHeight ?? heights.first!)
         self.content = content()
+        if let impact = impact {
+            self.impactGenerator = UIImpactFeedbackGenerator(style: impact)
+        }
     }
+    
+    // MARK: Gestures and Animation
     
     /// Additional height to spring past the last height marker
     private let springHeight: CGFloat = 12
@@ -49,6 +54,7 @@ public struct Drawer<Content>: View where Content: View {
             self.height = min(
                 -value.location.y + value.startLocation.y + self.restingHeight,
                 self.fullHeight)
+            self.animation = Animation?.none
         }).onEnded({ (value) in
             let change = value.startLocation.y - value.predictedEndLocation.y + self.restingHeight
             let first = self.heights.first!
@@ -61,8 +67,26 @@ public struct Drawer<Content>: View where Content: View {
                 return current
             }.0
             self.restingHeight = self.height
+            self.animation = Animation.spring()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.playHaptic()
+            }
         })
     }
+    
+    @State private var animation: Animation? = Animation.spring()
+    
+    // MARK: Haptics
+    
+    private var impactGenerator: UIImpactFeedbackGenerator?
+    
+    private func playHaptic() {
+        impactGenerator?.impactOccurred()
+    }
+    
+    // MARK: View
+    
+    private var content: Content
     
     public var body: some View {
         
@@ -74,7 +98,7 @@ public struct Drawer<Content>: View where Content: View {
             content
                 .frame(height: self.fullHeight)
                 .offset(y: -$height.wrappedValue)
-                .animation(.default)
+                .animation(animation)
                 .gesture(dragGesture)
         }
         .frame(height: UIScreen.main.bounds.height)
@@ -87,7 +111,7 @@ struct Drawer_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40]) {
+            Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
                 ZStack {
                     
                     RoundedRectangle(cornerRadius: 12)
@@ -110,5 +134,3 @@ struct Drawer_Previews: PreviewProvider {
         }
     }
 }
-
-#endif
