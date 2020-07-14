@@ -8,6 +8,23 @@ Add a dependency in your your `Package.swift`
 
 `.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.0"),`
 
+## Usage
+
+Embed your view content in a `ZStack` with the Drawer as the last element.
+
+```
+ZStack {
+
+    ScrollView {
+        //...
+    }
+    
+    Drawer(heights: [100, 340]) {
+        Color.blue
+    }
+}
+```
+
 ## Example 1
 
 
