@@ -8,9 +8,27 @@ Add a dependency in your your `Package.swift`
 
 `.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.0"),`
 
+## Usage
+
+Embed your view content in a `ZStack` with the Drawer as the last element.
+
+```
+ZStack {
+
+    ScrollView {
+        //...
+    }
+    
+    Drawer(heights: [100, 340]) {
+        Color.blue
+    }
+}
+```
+
 ## Example 1
 
-![A custom multi-height drawer](Previews/blue-drawer.mov)
+
+<img src=Previews/white-drawer.mov width=200 />
 
 ```
 Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
@@ -33,7 +51,7 @@ Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
 
 ## Example 2
 
-![A two-height blue drawer](Previews/blue-drawer.mov)
+<img src=Previews/blue-drawer.mov width=200 />
 
 ```
 Drawer(heights: [100, 340]) {
