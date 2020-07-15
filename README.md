@@ -6,13 +6,15 @@ A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize
 
 Add a dependency in your your `Package.swift`
 
-`.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.1"),`
+```swift
+.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.1"),
+```
 
 ## Usage
 
 Embed your view content in a `ZStack` with the Drawer as the last element.
 
-```
+```swift
 ZStack {
 
     ScrollView {
@@ -31,7 +33,7 @@ ZStack {
 
 A multi-height drawer with haptic impact.
 
-```
+```swift
 Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
     ZStack {
         
@@ -56,7 +58,7 @@ Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
 
 A basic two-height drawer.
 
-```
+```swift
 Drawer(heights: [100, 340]) {
     Color.blue
 }
