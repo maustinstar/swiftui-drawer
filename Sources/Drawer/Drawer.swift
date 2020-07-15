@@ -138,6 +138,7 @@ internal extension Drawer {
         self.heights = heights
         self._height = .init(initialValue: height)
         self._restingHeight = .init(initialValue: restingHeight)
+        self.springHeight = springHeight
         self.didRest = didRest
         self.content = content
         self.impactGenerator = impactGenerator
