@@ -1,15 +1,16 @@
 //
 //  Drawer.swift
-//  Party Anchor
+//
 //
 //  Created by Michael Verges on 7/14/20.
-//  Copyright © 2020 littlnotes. All rights reserved.
 //
 
 import SwiftUI
 
 /// A bottom-up view that conforms to multiple heights
 public struct Drawer<Content>: View where Content: View {
+    
+    // MARK: Public Init
     
     /// A bottom-up view that conforms to multiple heights
     /// - Parameters:
@@ -20,7 +21,8 @@ public struct Drawer<Content>: View where Content: View {
         heights: [CGFloat],
         startingHeight: CGFloat? = nil,
         impact: UIImpactFeedbackGenerator.FeedbackStyle? = nil,
-        @ViewBuilder _ content: () -> Content) {
+        @ViewBuilder _ content: () -> Content
+    ) {
         self.heights = heights
         self._height = .init(initialValue: startingHeight ?? heights.first!)
         self._restingHeight = .init(initialValue: startingHeight ?? heights.first!)
@@ -28,76 +30,90 @@ public struct Drawer<Content>: View where Content: View {
         if let impact = impact {
             self.impactGenerator = UIImpactFeedbackGenerator(style: impact)
         }
+        self._locked = .constant(false)
+        self.lockedHeight = { _ in return CGFloat.zero }
     }
     
-    // MARK: Gestures and Animation
-    
-    /// Additional height to spring past the last height marker
-    private let springHeight: CGFloat = 12
-    
-    /// The height of the drawer to be shown at maximum spring height
-    private var fullHeight: CGFloat {
-        return heights.max()! + springHeight
-    }
-    
-    /// The current height of the displayed drawer
-    @State public var height: CGFloat
-    
-    /// The current height marker the drawer is conformed to
-    @State private var restingHeight: CGFloat
+    // MARK: Public Variables
     
     /// The possible resting heights of the drawer
     public var heights: [CGFloat]
     
+    /// The current height of the displayed drawer
+    @State public var height: CGFloat
+    
+    // MARK: Height Calculation
+    
+    /// The height of the drawer to be shown at maximum spring height
+    internal var fullHeight: CGFloat {
+        return heights.max()! + springHeight
+    }
+    
+    internal var activeBound: ClosedRange<CGFloat> {
+        let height = lockedHeight(restingHeight)
+        return locked
+            ? height...height
+            : heights.min()!...heights.max()!
+    }
+    
+    /// The current height marker the drawer is conformed to. Change triggers `onRest`
+    @State internal var restingHeight: CGFloat {
+        didSet {
+            didRest?(restingHeight)
+        }
+    }
+    
+    internal var didRest: ((_ height: CGFloat) -> ())? = nil
+    
+    @Binding internal var locked: Bool
+    
+    internal var lockedHeight: (_ restingHeight: CGFloat) -> CGFloat
+    
+    // MARK: Gestures
+    
+    @State internal var dragging: Bool = false
+    
     private var dragGesture: some Gesture {
         return DragGesture().onChanged({ (value) in
-            self.height = min(
-                -value.location.y + value.startLocation.y + self.restingHeight,
-                self.fullHeight)
-            self.animation = Animation?.none
+            self.dragChanged(value)
         }).onEnded({ (value) in
-            let change = value.startLocation.y - value.predictedEndLocation.y + self.restingHeight
-            let first = self.heights.first!
-            self.height = self.heights.reduce(
-                (first, abs(first - change))
-            ) { (current, value) -> (CGFloat, CGFloat) in
-                if current.1 > abs(value - change) {
-                    return (value, abs(value - change))
-                }
-                return current
-            }.0
-            self.restingHeight = self.height
-            self.animation = Animation.spring()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.playHaptic()
-            }
+            self.dragEnded(value)
         })
     }
     
-    @State private var animation: Animation? = Animation.spring()
+    // MARK: Animation
+    
+    /// Additional height to spring past the last height marker
+    internal var springHeight: CGFloat = 12
+    
+    @State internal var animation: Animation? = Animation.spring()
     
     // MARK: Haptics
     
-    private var impactGenerator: UIImpactFeedbackGenerator?
-    
-    private func playHaptic() {
-        impactGenerator?.impactOccurred()
-    }
+    internal var impactGenerator: UIImpactFeedbackGenerator?
     
     // MARK: View
     
-    private var content: Content
+    internal var content: Content
     
     public var body: some View {
-        
         VStack {
             Spacer()
-                .frame(width: 20.0)
-                .frame(width: 20.0)
                 .frame(height: UIScreen.main.bounds.height + fullHeight)
+                
             content
                 .frame(height: self.fullHeight)
-                .offset(y: -$height.wrappedValue)
+                .offset(y: {
+                    if $locked.wrappedValue
+                        && !$dragging.wrappedValue {
+                        DispatchQueue.main.async {
+                            let newHeight = self.lockedHeight(self.restingHeight)
+                            self.restingHeight = newHeight
+                            self.height = newHeight
+                        }
+                    }
+                    return -$height.wrappedValue
+                }())
                 .animation(animation)
                 .gesture(dragGesture)
         }
@@ -105,32 +121,28 @@ public struct Drawer<Content>: View where Content: View {
     }
 }
 
-struct Drawer_Previews: PreviewProvider {
-    
-    @State static var query = ""
-    
-    static var previews: some View {
-        Group {
-            Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
-                ZStack {
-                    
-                    RoundedRectangle(cornerRadius: 12)
-                        .foregroundColor(.white)
-                        .shadow(radius: 100)
-                    
-                    VStack(alignment: .center) {
-                        Spacer().frame(height: 4.0)
-                        RoundedRectangle(cornerRadius: 3.0)
-                            .foregroundColor(.gray)
-                            .frame(width: 30.0, height: 6.0)
-                        Spacer()
-                    }
-                }
-            }
-            
-            Drawer(heights: [100, 340]) {
-                Color.blue
-            }
-        }
+// MARK: Internal init
+
+internal extension Drawer {
+    init(
+        heights: [CGFloat],
+        height: CGFloat,
+        restingHeight: CGFloat,
+        springHeight: CGFloat,
+        didRest: ((_ height: CGFloat) -> ())?,
+        impactGenerator: UIImpactFeedbackGenerator?,
+        locked: Binding<Bool>,
+        lockedHeight: @escaping (CGFloat) -> CGFloat,
+        content: Content
+    ) {
+        self.heights = heights
+        self._height = .init(initialValue: height)
+        self._restingHeight = .init(initialValue: restingHeight)
+        self.didRest = didRest
+        self.content = content
+        self.impactGenerator = impactGenerator
+        self.lockedHeight = lockedHeight
+        self._locked = locked
+        
     }
 }
