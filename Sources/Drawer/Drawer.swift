@@ -20,7 +20,28 @@ public struct Drawer<Content>: View where Content: View {
     public init(
         heights: [CGFloat],
         startingHeight: CGFloat? = nil,
-        impact: UIImpactFeedbackGenerator.FeedbackStyle? = nil,
+        @ViewBuilder _ content: () -> Content
+    ) {
+        self.heights = heights
+        self._height = .init(initialValue: startingHeight ?? heights.first!)
+        self._restingHeight = .init(initialValue: startingHeight ?? heights.first!)
+        self.content = content()
+        self._locked = .constant(false)
+        self.lockedHeight = { _ in return CGFloat.zero }
+    }
+    
+    // MARK: Public Init
+    
+    /// A bottom-up view that conforms to multiple heights
+    /// - Parameters:
+    ///   - heights: The possible resting heights of the drawer
+    ///   - startingHeight: The starting height of the drawer. Defaults to the first height marker if not specified
+    ///   - content: The view that defines the drawer
+    @available(*, deprecated)
+    public init(
+        heights: [CGFloat],
+        startingHeight: CGFloat? = nil,
+        impact: UIImpactFeedbackGenerator.FeedbackStyle?,
         @ViewBuilder _ content: () -> Content
     ) {
         self.heights = heights
