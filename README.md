@@ -21,7 +21,7 @@ A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize
 Add a dependency in your your `Package.swift`
 
 ```swift
-.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.1"),
+.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.3"),
 ```
 
 ## Usage
