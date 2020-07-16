@@ -47,7 +47,7 @@ Following SwiftUI's declarative syntax, these view modifiers return a modified D
 
 ### Impact
 
-#### `impact(_: UIImpactFeedbackGenerator.FeedbackStyle) -> Drawer`
+#### 💥 `impact(_: UIImpactFeedbackGenerator.FeedbackStyle) -> Drawer`
 
 Sets the haptic impact of the drawer when resting.
 
@@ -82,7 +82,7 @@ Drawer(heights: [100, 340]) {
 
 ### Spring
 
-#### `spring(_: CGFloat) -> Drawer`
+#### 🪀 `spring(_: CGFloat) -> Drawer`
 
 Sets the springiness of the drawer when pulled past boundaries.
 
@@ -112,7 +112,7 @@ Drawer(heights: [100, 340]) {
 
 ### Locked
 
-#### `locked(_: Binding<Bool>, to height: @escaping (_ restingHeight: CGFloat) -> CGFloat) -> Drawer`
+#### 🔒 `locked(_: Binding<Bool>, to height: @escaping (_ restingHeight: CGFloat) -> CGFloat) -> Drawer`
 
 Locks the drawer in a controlled position. When set to true, the drawer will animate into the locked height.
 
@@ -143,7 +143,7 @@ Drawer(heights: [100, 340]) {
 
 ### OnRest
 
-#### `onRest(_: @escaping (_ height: CGFloat) -> ()) -> Drawer`
+#### 😴 `onRest(_: @escaping (_ height: CGFloat) -> ()) -> Drawer`
 
 A callback to receive updates when the drawer reaches a new resting level.
 
