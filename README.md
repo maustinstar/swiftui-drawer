@@ -128,7 +128,7 @@ Lock into a fixed position.
 Drawer(heights: [100, 340]) {
     Color.blue
 }.locked($locked) {_ in
-    return current
+    return 30
 }
 ```
 
