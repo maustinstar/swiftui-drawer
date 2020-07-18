@@ -9,10 +9,14 @@ A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize
 - [Add the Package](#package)
 - [Usage](#usage)
 - [View Modifiers](#view-modifiers)
+    - [`rest`](#rest)
+    - [`width`](#width)
+    - [`alignment`](#alignment)
     - [`impact`](#impact)
     - [`spring`](#spring)
     - [`locked`](#locked)
     - [`onRest`](#onrest)
+    - [`onLayoutForSizeClass`](#onlayoutforsizeclass)
 - [Example 1](#example-1)
 - [Example 2](#example-2)
 
@@ -21,7 +25,7 @@ A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize
 Add a dependency in your your `Package.swift`
 
 ```swift
-.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.3"),
+.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.4"),
 ```
 
 ## Usage
@@ -44,6 +48,56 @@ ZStack {
 ## View Modifiers
 
 Following SwiftUI's declarative syntax, these view modifiers return a modified Drawer.
+
+### Rest
+
+#### 🛏️ `rest(at heights: Binding<[CGFloat]>) -> Drawer`
+
+Sets the active possible resting heights of the drawer.
+
+
+**Usage**
+Set a spring distance
+```swift
+Drawer {
+    Color.blue
+}.rest(at: $heights)
+```
+
+### Width
+
+#### 📏 `width(_: Binding<CGFloat?>) -> Drawer`
+
+Defines a width for the drawer when not in fullscreen alignment.
+
+**Usage**
+```swift
+Drawer(heights: [100, 340]) {
+    Color.blue
+}.width(.constant(340))
+```
+
+### Alignment
+
+#### 📐 `alignment(_: Binding<DrawerAlignment>) -> Drawer`
+
+Defines the horizontal alignment for the drawer. Default is fullscreen.
+
+**Alignment**
+```swift
+public enum DrawerAlignment {
+    case leading, center, trailing, fullscreen
+}
+```
+
+**Usage**
+```swift
+Drawer(heights: [100, 340]) {
+    Color.blue
+}
+.width(.constant(340))
+.alignment($alignment)
+```
 
 ### Impact
 
@@ -160,6 +214,57 @@ Drawer(heights: [100, 340]) {
 }
 ```
 
+### OnLayoutForSizeClass
+
+#### 🔄 `onLayoutForSizeClass(_: @escaping (SizeClass) -> ()) -> Drawer`
+
+A callback to receive updates when the drawer is layed out for a new size class.
+
+**Closure**
+This closure is executed every time the device layout changes (portrait, landscape, and splitview).
+Use this to modify your view when the drawer's layout changes. 
+
+**Usage**
+Alter the resting heights and alignment when the screen layout changes.
+```swift
+Drawer(heights: [100, 340]) {
+    Color.blue
+}
+.rest(at: $heights)
+.width(.constant(340))
+.alignment($alignment)
+.onLayoutForSizeClass { (sizeClass) in
+    switch (sizeClass.horizontal, sizeClass.vertical) {
+    case (.compact, .compact):
+        // smaller iPhone landscape
+        self.heights = [100, UIScreen.main.bounds.height - 40]
+        self.alignment = .trailing
+        break
+    case (.compact, .regular):
+        // iPhone portrait
+        // iPad portrait splitview
+        // iPad landscape smaller splitview
+        self.heights = [100, 340, UIScreen.main.bounds.height - 40]
+        self.alignment = .fullscreen
+        break
+    case (.regular, .compact):
+        // larger iPhone landscape
+        self.heights = [100, UIScreen.main.bounds.height - 40]
+        self.alignment = .trailing
+        break
+    case (.regular, .regular):
+        // iPad fullscreen
+        // iPad landscape larger splitview
+        self.heights = [100, UIScreen.main.bounds.height - 40]
+        self.alignment = .trailing
+        break
+    default:
+        // Unknown layout
+        break
+    }
+}
+```
+
 ## Example 1
 
 <img src=Previews/white-drawer.gif width=200 />
@@ -167,7 +272,7 @@ Drawer(heights: [100, 340]) {
 A multi-height drawer with haptic impact.
 
 ```swift
-Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
+Drawer {
     ZStack {
         
         RoundedRectangle(cornerRadius: 12)
@@ -183,6 +288,8 @@ Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
         }
     }
 }
+.rest(at: .constant([100, 340, UIScreen.main.bounds.height - 40]))
+.impact(.light)
 ```
 
 ## Example 2
@@ -192,9 +299,9 @@ Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
 A basic two-height drawer.
 
 ```swift
-Drawer(heights: [100, 340]) {
+Drawer {
     Color.blue
-}
+}.rest(at: .constant([100, 340]))
 ```
 
 ## Authors
