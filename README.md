@@ -2,7 +2,7 @@
 
 A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize.
 
-<img src=Previews/white-drawer.mov width=200 />
+<img src=Previews/white-drawer.gif width=200 />
 
 ## Contents
 
@@ -21,7 +21,7 @@ A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize
 Add a dependency in your your `Package.swift`
 
 ```swift
-.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.1"),
+.package(url: "https://github.com/maustinstar/swiftui-drawer.git", from: "0.0.3"),
 ```
 
 ## Usage
@@ -128,7 +128,7 @@ Lock into a fixed position.
 Drawer(heights: [100, 340]) {
     Color.blue
 }.locked($locked) {_ in
-    return current
+    return 30
 }
 ```
 
@@ -162,7 +162,7 @@ Drawer(heights: [100, 340]) {
 
 ## Example 1
 
-<img src=Previews/white-drawer.mov width=200 />
+<img src=Previews/white-drawer.gif width=200 />
 
 A multi-height drawer with haptic impact.
 
@@ -187,7 +187,7 @@ Drawer(heights: [100, 340, UIScreen.main.bounds.height - 40], impact: .light) {
 
 ## Example 2
 
-<img src=Previews/blue-drawer.mov width=200 />
+<img src=Previews/blue-drawer.gif width=200 />
 
 A basic two-height drawer.
 
