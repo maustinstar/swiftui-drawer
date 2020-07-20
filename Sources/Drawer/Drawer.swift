@@ -50,12 +50,6 @@ public struct Drawer<Content>: View where Content: View {
     /// A callback executed when the drawer is layed out for a new size class
     internal var didLayoutForSizeClass: ((SizeClass) -> ())? = nil
     
-    // MARK: Width
-    
-    @Binding internal var alignment: DrawerAlignment
-    
-    @Binding internal var fixedWidth: CGFloat?
-    
     // MARK: Gestures
     
     @State internal var dragging: Bool = false
@@ -96,8 +90,6 @@ public extension Drawer {
         self.content = content()
         self._locked = .constant(false)
         self.lockedHeight = { _ in return CGFloat.zero }
-        self._alignment = .constant(.fullscreen)
-        self._fixedWidth = .constant(nil)
     }
     
     /// A bottom-up view that conforms to multiple heights
@@ -117,8 +109,6 @@ public extension Drawer {
         self.content = content()
         self._locked = .constant(false)
         self.lockedHeight = { _ in return CGFloat.zero }
-        self._alignment = .constant(.fullscreen)
-        self._fixedWidth = .constant(nil)
     }
     
     // MARK: Deprecated Inits
@@ -144,8 +134,6 @@ public extension Drawer {
         }
         self._locked = .constant(false)
         self.lockedHeight = { _ in return CGFloat.zero }
-        self._alignment = .constant(.fullscreen)
-        self._fixedWidth = .constant(nil)
     }
 }
 
@@ -157,8 +145,6 @@ internal extension Drawer {
         springHeight: CGFloat,
         didRest: ((_ height: CGFloat) -> ())?,
         didLayoutForSizeClass: ((SizeClass) -> ())?,
-        alignment: Binding<DrawerAlignment>,
-        width: Binding<CGFloat?>,
         impactGenerator: UIImpactFeedbackGenerator?,
         locked: Binding<Bool>,
         lockedHeight: @escaping (CGFloat) -> CGFloat,
@@ -170,8 +156,6 @@ internal extension Drawer {
         self.springHeight = springHeight
         self.didRest = didRest
         self.didLayoutForSizeClass = didLayoutForSizeClass
-        self._fixedWidth = width
-        self._alignment = alignment
         self.content = content
         self.impactGenerator = impactGenerator
         self.lockedHeight = lockedHeight

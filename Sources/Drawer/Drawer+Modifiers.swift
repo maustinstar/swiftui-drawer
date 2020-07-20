@@ -22,8 +22,6 @@ public extension Drawer {
             springHeight: springHeight,
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: $fixedWidth,
             impactGenerator: impactGenerator,
             locked: $locked,
             lockedHeight: lockedHeight,
@@ -43,8 +41,6 @@ public extension Drawer {
             springHeight: springHeight,
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: $fixedWidth,
             impactGenerator: impactGenerator,
             locked: locked,
             lockedHeight: height,
@@ -62,8 +58,6 @@ public extension Drawer {
             springHeight: max(spring, 0),
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: $fixedWidth,
             impactGenerator: impactGenerator,
             locked: $locked,
             lockedHeight: lockedHeight,
@@ -82,8 +76,6 @@ public extension Drawer {
             springHeight: springHeight,
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: $fixedWidth,
             impactGenerator: impactGenerator,
             locked: $locked,
             lockedHeight: lockedHeight,
@@ -101,8 +93,6 @@ public extension Drawer {
             springHeight: springHeight,
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: $fixedWidth,
             impactGenerator: impactGenerator,
             locked: $locked,
             lockedHeight: lockedHeight,
@@ -121,46 +111,6 @@ public extension Drawer {
             springHeight: springHeight,
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: $fixedWidth,
-            impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
-            content: content)
-    }
-    
-    /// Defines a width for the drawer when not in fullscreen alignment
-    /// - Parameter width: Width for the drawer when not in fullscreen alignment
-    /// - Returns: Drawer
-    func width(_ width: Binding<CGFloat?>) -> Drawer {
-        return Drawer(
-            heights: $heights,
-            height: height,
-            restingHeight: restingHeight,
-            springHeight: springHeight,
-            didRest: didRest,
-            didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: $alignment,
-            width: width,
-            impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
-            content: content)
-    }
-    
-    /// Defines the alignment for the drawer
-    /// - Parameter alignment: `leading`, `trailing`, `center`, or `fullscreen`
-    /// - Returns: Drawer
-    func alignment(_ alignment: Binding<DrawerAlignment>) -> Drawer {
-        return Drawer(
-            heights: $heights,
-            height: height,
-            restingHeight: restingHeight,
-            springHeight: springHeight,
-            didRest: didRest,
-            didLayoutForSizeClass: didLayoutForSizeClass,
-            alignment: alignment,
-            width: $fixedWidth,
             impactGenerator: impactGenerator,
             locked: $locked,
             lockedHeight: lockedHeight,

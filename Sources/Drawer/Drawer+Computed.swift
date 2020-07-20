@@ -54,25 +54,18 @@ extension Drawer {
             }
         }
         
-        return VStack {
-            Spacer()
-                .frame(height:
-                    UIScreen.main.bounds.height + fullHeight
-                        /*+ (landscape ? 20 : 0)*/)
-            
-            HStack {
-                if (alignment == .trailing || alignment == .center) {
-                    Spacer().animation(.default)
-                }
-                content
-                    .frame(height: fullHeight)
-                    .offset(y: offset)
-                    .animation(animation)
-                    .gesture(dragGesture)
-                    .frame(width: alignment == .fullscreen ? nil : fixedWidth)
-                if (alignment == .leading || alignment == .center) {
-                    Spacer().animation(.default)
-                }
+        return GeometryReader { (proxy) in
+            VStack {
+                Spacer()
+                    .frame(height:
+                        proxy.frame(in: .global).height + self.fullHeight
+                            /*+ (landscape ? 20 : 0)*/)
+
+                self.content
+                    .frame(height: self.fullHeight)
+                    .offset(y: self.offset)
+                    .animation(self.animation)
+                    .gesture(self.dragGesture)
             }
         }
     }
