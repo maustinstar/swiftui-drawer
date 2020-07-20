@@ -9,10 +9,8 @@ import SwiftUI
 
 public extension Drawer {
     
-    /// Locks the drawer in a controlled position
-    /// - Parameters:
-    ///   - locked: Indicates if the drawer is locked
-    ///   - height: A function reading the current resting height of the drawer and returning the height to lock the drawer
+    /// Sets the resting heights of the drawer
+    /// - Parameter heights: Possible resting heights for the drawer
     /// - Returns: Drawer
     func rest(at heights: Binding<[CGFloat]>) -> Drawer {
         return Drawer(
@@ -23,27 +21,6 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
-            content: content)
-    }
-    
-    /// Locks the drawer in a controlled position
-    /// - Parameters:
-    ///   - locked: Indicates if the drawer is locked
-    ///   - height: A function reading the current resting height of the drawer and returning the height to lock the drawer
-    /// - Returns: Drawer
-    func locked(_ locked: Binding<Bool>, to height: @escaping (_ restingHeight: CGFloat) -> CGFloat) -> Drawer {
-        return Drawer(
-            heights: $heights,
-            height: self.height,
-            restingHeight: restingHeight,
-            springHeight: springHeight,
-            didRest: didRest,
-            didLayoutForSizeClass: didLayoutForSizeClass,
-            impactGenerator: impactGenerator,
-            locked: locked,
-            lockedHeight: height,
             content: content)
     }
     
@@ -59,8 +36,6 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
             content: content)
     }
     
@@ -77,8 +52,6 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
             content: content)
     }
     
@@ -94,8 +67,6 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
             content: content)
     }
     
@@ -112,8 +83,6 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
-            locked: $locked,
-            lockedHeight: lockedHeight,
             content: content)
     }
 }

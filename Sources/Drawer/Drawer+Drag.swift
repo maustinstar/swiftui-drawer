@@ -33,11 +33,6 @@ internal extension Drawer {
     
     func dragEnded(_ value: DragGesture.Value) {
         dragging = false
-        if locked {
-            height = restingHeight
-            animation = Animation.spring()
-            return
-        }
         
         let change = value.startLocation.y
             - value.predictedEndLocation.y + restingHeight

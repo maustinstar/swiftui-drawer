@@ -16,22 +16,12 @@ extension Drawer {
     }
     
     internal var activeBound: ClosedRange<CGFloat> {
-        let height = lockedHeight(restingHeight)
-        return locked
-            ? height...height
-            : heights.min()!...heights.max()!
+        return heights.min()!...heights.max()!
     }
     
     // MARK: View
     
     private var offset: CGFloat {
-        if locked && !dragging {
-            DispatchQueue.main.async {
-                let newHeight = self.lockedHeight(self.restingHeight)
-                self.restingHeight = newHeight
-                self.height = newHeight
-            }
-        }
         if !dragging && !heights.contains(restingHeight) {
             DispatchQueue.main.async {
                 let newHeight = Drawer.closest(self.restingHeight, markers: self.heights)
