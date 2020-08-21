@@ -85,46 +85,6 @@ public extension Drawer {
         self._restingHeight = .init(initialValue: startingHeight ?? heights.wrappedValue.first!)
         self.content = content()
     }
-    
-    /// A bottom-up view that conforms to multiple heights
-    /// - Parameters:
-    ///   - heights: The possible resting heights of the drawer
-    ///   - startingHeight: The starting height of the drawer. Defaults to the first height marker if not specified
-    ///   - content: The view that defines the drawer
-    @available(*, deprecated)
-    init(
-        heights: [CGFloat],
-        startingHeight: CGFloat? = nil,
-        @ViewBuilder _ content: () -> Content
-    ) {
-        self._heights = .constant(heights)
-        self._height = .init(initialValue: startingHeight ?? heights.first!)
-        self._restingHeight = .init(initialValue: startingHeight ?? heights.first!)
-        self.content = content()
-    }
-    
-    // MARK: Deprecated Inits
-    
-    /// A bottom-up view that conforms to multiple heights
-    /// - Parameters:
-    ///   - heights: The possible resting heights of the drawer
-    ///   - startingHeight: The starting height of the drawer. Defaults to the first height marker if not specified
-    ///   - content: The view that defines the drawer
-    @available(*, deprecated)
-    init(
-        heights: [CGFloat],
-        startingHeight: CGFloat? = nil,
-        impact: UIImpactFeedbackGenerator.FeedbackStyle?,
-        @ViewBuilder _ content: () -> Content
-    ) {
-        self._heights = .constant(heights)
-        self._height = .init(initialValue: startingHeight ?? heights.first!)
-        self._restingHeight = .init(initialValue: startingHeight ?? heights.first!)
-        self.content = content()
-        if let impact = impact {
-            self.impactGenerator = UIImpactFeedbackGenerator(style: impact)
-        }
-    }
 }
 
 // MARK: Internal Init
