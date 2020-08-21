@@ -10,11 +10,8 @@ A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize
 - [Usage](#usage)
 - [View Modifiers](#view-modifiers)
     - [`rest`](#rest)
-    - [`width`](#width)
-    - [`alignment`](#alignment)
     - [`impact`](#impact)
     - [`spring`](#spring)
-    - [`locked`](#locked)
     - [`onRest`](#onrest)
     - [`onLayoutForSizeClass`](#onlayoutforsizeclass)
 - [Example 1](#example-1)
@@ -55,48 +52,12 @@ Following SwiftUI's declarative syntax, these view modifiers return a modified D
 
 Sets the active possible resting heights of the drawer.
 
-
 **Usage**
 Set a spring distance
 ```swift
 Drawer {
     Color.blue
 }.rest(at: $heights)
-```
-
-### Width
-
-#### 📏 `width(_: Binding<CGFloat?>) -> Drawer`
-
-Defines a width for the drawer when not in fullscreen alignment.
-
-**Usage**
-```swift
-Drawer(heights: [100, 340]) {
-    Color.blue
-}.width(.constant(340))
-```
-
-### Alignment
-
-#### 📐 `alignment(_: Binding<DrawerAlignment>) -> Drawer`
-
-Defines the horizontal alignment for the drawer. Default is fullscreen.
-
-**Alignment**
-```swift
-public enum DrawerAlignment {
-    case leading, center, trailing, fullscreen
-}
-```
-
-**Usage**
-```swift
-Drawer(heights: [100, 340]) {
-    Color.blue
-}
-.width(.constant(340))
-.alignment($alignment)
 ```
 
 ### Impact
@@ -164,37 +125,6 @@ Drawer(heights: [100, 340]) {
 }.spring(isSpringy ? 0 : 20)
 ```
 
-### Locked
-
-#### 🔒 `locked(_: Binding<Bool>, to height: @escaping (_ restingHeight: CGFloat) -> CGFloat) -> Drawer`
-
-Locks the drawer in a controlled position. When set to true, the drawer will animate into the locked height.
-
-**isLocked**
-A Binding Bool indicating if the drawer should be locked.
-
-**height**
-A closure returning the height to lock the drawer. The closure's argument is the drawer's current resting height.
-
-**Usage**
-Lock into a fixed position.
-```swift
-Drawer(heights: [100, 340]) {
-    Color.blue
-}.locked($locked) {_ in
-    return 30
-}
-```
-
-Lock into the current resting height
-```swift
-Drawer(heights: [100, 340]) {
-    Color.blue
-}.locked($locked) { (current) in
-    return current
-}
-```
-
 ### OnRest
 
 #### 😴 `onRest(_: @escaping (_ height: CGFloat) -> ()) -> Drawer`
@@ -231,32 +161,26 @@ Drawer(heights: [100, 340]) {
     Color.blue
 }
 .rest(at: $heights)
-.width(.constant(340))
-.alignment($alignment)
 .onLayoutForSizeClass { (sizeClass) in
     switch (sizeClass.horizontal, sizeClass.vertical) {
     case (.compact, .compact):
         // smaller iPhone landscape
         self.heights = [100, UIScreen.main.bounds.height - 40]
-        self.alignment = .trailing
         break
     case (.compact, .regular):
         // iPhone portrait
         // iPad portrait splitview
         // iPad landscape smaller splitview
         self.heights = [100, 340, UIScreen.main.bounds.height - 40]
-        self.alignment = .fullscreen
         break
     case (.regular, .compact):
         // larger iPhone landscape
         self.heights = [100, UIScreen.main.bounds.height - 40]
-        self.alignment = .trailing
         break
     case (.regular, .regular):
         // iPad fullscreen
         // iPad landscape larger splitview
         self.heights = [100, UIScreen.main.bounds.height - 40]
-        self.alignment = .trailing
         break
     default:
         // Unknown layout
