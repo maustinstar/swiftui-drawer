@@ -38,7 +38,7 @@ ZStack {
     
     Drawer(heights: [100, 340]) {
         Color.blue
-    }
+    }.edgesIgnoringSafeArea(.vertical)
 }
 ```
 
@@ -66,7 +66,7 @@ Drawer {
             Spacer()
         }
     }
-}
+}.edgesIgnoringSafeArea(.vertical)
 .rest(at: .constant([100, 340, UIScreen.main.bounds.height - 40]))
 .impact(.light)
 ```
