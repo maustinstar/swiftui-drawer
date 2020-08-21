@@ -1,5 +1,7 @@
 #  Examples
 
+> Note: For full screen views, make sure that the surrounding ZStack uses `.edgesIgnoringSafeArea(.vertical)` to avoid whitespace at the bottom on iOS.
+
 ## Basic Usage
 
 Embed your view content in a `ZStack` with the Drawer as the last element. The `heights` parameter defines a list of resting heights for the drawer.
@@ -14,7 +16,7 @@ ZStack {
     Drawer(heights: [100, 340]) {
         Color.blue
     }
-}
+}.edgesIgnoringSafeArea(.vertical)
 ```
 
 ## Multi-height drawer with haptic impact
