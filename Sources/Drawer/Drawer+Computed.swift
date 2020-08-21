@@ -16,22 +16,12 @@ extension Drawer {
     }
     
     internal var activeBound: ClosedRange<CGFloat> {
-        let height = lockedHeight(restingHeight)
-        return locked
-            ? height...height
-            : heights.min()!...heights.max()!
+        return heights.min()!...heights.max()!
     }
     
     // MARK: View
     
     private var offset: CGFloat {
-        if locked && !dragging {
-            DispatchQueue.main.async {
-                let newHeight = self.lockedHeight(self.restingHeight)
-                self.restingHeight = newHeight
-                self.height = newHeight
-            }
-        }
         if !dragging && !heights.contains(restingHeight) {
             DispatchQueue.main.async {
                 let newHeight = Drawer.closest(self.restingHeight, markers: self.heights)
@@ -54,25 +44,18 @@ extension Drawer {
             }
         }
         
-        return VStack {
-            Spacer()
-                .frame(height:
-                    UIScreen.main.bounds.height + fullHeight
-                        /*+ (landscape ? 20 : 0)*/)
-            
-            HStack {
-                if (alignment == .trailing || alignment == .center) {
-                    Spacer().animation(.default)
-                }
-                content
-                    .frame(height: fullHeight)
-                    .offset(y: offset)
-                    .animation(animation)
-                    .gesture(dragGesture)
-                    .frame(width: alignment == .fullscreen ? nil : fixedWidth)
-                if (alignment == .leading || alignment == .center) {
-                    Spacer().animation(.default)
-                }
+        return GeometryReader { (proxy) in
+            VStack {
+                Spacer()
+                    .frame(height:
+                        proxy.frame(in: .global).height + self.fullHeight
+                            /*+ (landscape ? 20 : 0)*/)
+
+                self.content
+                    .frame(height: self.fullHeight)
+                    .offset(y: self.offset)
+                    .animation(self.animation)
+                    .gesture(self.dragGesture)
             }
         }
     }
