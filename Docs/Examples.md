@@ -19,7 +19,7 @@ ZStack {
 
 ## Multi-height drawer with haptic impact
 
-<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/master/Docs/Media/white-drawer.gif width=200 />
+<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/master/Docs/Media/white-drawer.gif width=200 align="right" />
 
 ```swift
 Drawer {
@@ -44,7 +44,7 @@ Drawer {
 
 ## Example 2
 
-<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/master/Docs/Media/blue-drawer.gif width=200 />
+<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/master/Docs/Media/blue-drawer.gif width=200 align="right" />
 
 A basic two-height drawer.
 
