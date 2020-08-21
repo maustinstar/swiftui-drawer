@@ -2,7 +2,7 @@
 
 A SwiftUI bottom-up controller, like in the Maps app. Drag to expand or minimize.
 
-<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/blob/master/Docs/Media/white-drawer.gif width=200 />
+<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/master/Docs/Media/white-drawer.gif width=200 align="right" />
 
 ## Contents
 
@@ -46,7 +46,7 @@ ZStack {
 
 ## Examples
 
-<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/blob/master/Docs/Media/white-drawer.gif width=200 align="right" />
+<img src=https://raw.githubusercontent.com/maustinstar/swiftui-drawer/master/Docs/Media/white-drawer.gif width=200 align="right" />
 
 A multi-height drawer with haptic impact.
 
