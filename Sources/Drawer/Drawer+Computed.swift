@@ -44,13 +44,11 @@ extension Drawer {
             }
         }
         
-        return GeometryReader { (proxy) in
+        return GeometryReader { proxy in
             VStack {
                 Spacer()
-                    .frame(height:
-                        proxy.frame(in: .global).height + self.fullHeight
-                            /*+ (landscape ? 20 : 0)*/)
-
+                    .frame(height: calculateSpacerSize(proxy))
+                
                 self.content
                     .frame(height: self.fullHeight)
                     .offset(y: self.offset)
@@ -58,5 +56,12 @@ extension Drawer {
                     .gesture(self.dragGesture)
             }
         }
+    }
+    
+    // MARK: - Private
+    
+    private func calculateSpacerSize(_ proxy: GeometryProxy) -> CGFloat {
+        let minHeight = heights.min() ?? 0
+        return proxy.size.height - fullHeight + (fullHeight - minHeight)
     }
 }
