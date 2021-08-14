@@ -66,9 +66,10 @@ Drawer {
             Spacer()
         }
     }
-}.edgesIgnoringSafeArea(.vertical)
+}
 .rest(at: .constant([100, 340, UIScreen.main.bounds.height - 40]))
 .impact(.light)
+.edgesIgnoringSafeArea(.vertical)
 ```
 **See more [Examples](https://github.com/maustinstar/swiftui-drawer/blob/master/Docs/Examples.md)**
 
