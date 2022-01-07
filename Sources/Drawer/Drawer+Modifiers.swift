@@ -21,6 +21,7 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
+            dislodgeGenerator: dislodgeGenerator,
             content: content)
     }
     
@@ -36,6 +37,7 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
+            dislodgeGenerator: dislodgeGenerator,
             content: content)
     }
     
@@ -52,6 +54,24 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
+            dislodgeGenerator: dislodgeGenerator,
+            content: content)
+    }
+    
+    /// Sets the haptic feedback of dislodging the drawer
+    /// - Parameter dislodge: `FeedbackStyle` for dislodge  level
+    /// - Returns: Drawer with specified dislodge  level
+    func dislodge(_ dislodge: UIImpactFeedbackGenerator.FeedbackStyle) -> Drawer {
+        let dislodgeGenerator = UIImpactFeedbackGenerator(style: dislodge)
+        return Drawer(
+            heights: $heights,
+            height: height,
+            restingHeight: restingHeight,
+            springHeight: springHeight,
+            didRest: didRest,
+            didLayoutForSizeClass: didLayoutForSizeClass,
+            impactGenerator: impactGenerator,
+            dislodgeGenerator: dislodgeGenerator,
             content: content)
     }
     
@@ -67,6 +87,7 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
+            dislodgeGenerator: dislodgeGenerator,
             content: content)
     }
     
@@ -83,6 +104,7 @@ public extension Drawer {
             didRest: didRest,
             didLayoutForSizeClass: didLayoutForSizeClass,
             impactGenerator: impactGenerator,
+            dislodgeGenerator: dislodgeGenerator,
             content: content)
     }
 }

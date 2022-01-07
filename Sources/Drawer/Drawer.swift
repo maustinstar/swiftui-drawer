@@ -60,6 +60,7 @@ public struct Drawer<Content>: View where Content: View {
     // MARK: Haptics
     
     internal var impactGenerator: UIImpactFeedbackGenerator?
+    internal var dislodgeGenerator: UIImpactFeedbackGenerator?
     
     // MARK: View
     
@@ -98,6 +99,7 @@ internal extension Drawer {
         didRest: ((_ height: CGFloat) -> ())?,
         didLayoutForSizeClass: ((SizeClass) -> ())?,
         impactGenerator: UIImpactFeedbackGenerator?,
+        dislodgeGenerator: UIImpactFeedbackGenerator?,
         content: Content
     ) {
         self._heights = heights
@@ -108,6 +110,7 @@ internal extension Drawer {
         self.didLayoutForSizeClass = didLayoutForSizeClass
         self.content = content
         self.impactGenerator = impactGenerator
+        self.dislodgeGenerator = dislodgeGenerator
     }
 }
 

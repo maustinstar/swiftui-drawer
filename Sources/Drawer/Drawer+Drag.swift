@@ -20,6 +20,12 @@ internal extension Drawer {
     }
     
     func dragChanged(_ value: DragGesture.Value) {
+        if dragging == false {
+            DispatchQueue.main.async {
+                self.dislodgeGenerator?.impactOccurred()
+            }
+        }
+        
         dragging = true
         
         height = Drawer.dampen(
