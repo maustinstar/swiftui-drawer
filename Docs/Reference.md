@@ -53,6 +53,41 @@ Drawer(heights: [100, 340]) {
 }.impact(.light)
 ```
 
+### Dislodge
+
+#### 👆 `dislodge(_: UIImpactFeedbackGenerator.FeedbackStyle) -> Drawer`
+
+Sets the haptic impact of the drawer when dislodging from rest.
+
+**Feedback Style**
+Choose from the possible impact styles. [Apple Docs](https://developer.apple.com/documentation/uikit/uiimpactfeedbackgenerator/feedbackstyle)
+```swift
+public enum FeedbackStyle : Int {
+
+    /// A collision between small, light user interface elements.
+    case light = 0
+    
+    /// A collision between moderately sized user interface elements.
+    case medium = 1
+    
+    /// A collision between large, heavy user interface elements.
+    case heavy = 2
+    
+    @available(iOS 13.0, *)
+    case soft = 3
+    
+    @available(iOS 13.0, *)
+    case rigid = 4
+}
+```
+
+**Usage**
+```swift
+Drawer(heights: [100, 340]) {
+    Color.blue
+}.dislodge(.light)
+```
+
 ### Spring
 
 #### 🪀 `spring(_: CGFloat) -> Drawer`
